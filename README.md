@@ -48,12 +48,12 @@ python run_mpc.py
 ### **🔹 Scenario MPC**
 - Uses **multiple sampled dynamics from the BNN** for robust control.
 - Optimized using **CasADi** for trajectory optimization.
-- Supports constraints on **state and control inputs**.
+- Supports bounds on **state and control inputs**.
 
 ### **🔹 Dynamic System**
 - Base class for defining dynamical systems.
 - Any custom dynamical system can inherit from this class by implementing `dynamics()`.
-- Supports simulation using **Runge-Kutta integration**.
+- Can simulate dynamic systems using **Runge-Kutta integration**.
 - Can generate training data for the BNN.
 
 ---
