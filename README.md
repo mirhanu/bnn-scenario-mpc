@@ -65,9 +65,4 @@ See the [LICENSE](LICENSE) file for details.
 
 ---
 
-## 👨‍💻 Author
-Developed by **Mirhan Urkmez**  
-For inquiries, feel free to reach out!
-
----
 
