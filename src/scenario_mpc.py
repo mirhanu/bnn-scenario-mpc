@@ -74,7 +74,7 @@ class ScenarioMPC:
             
             # Compute average cost over scenarios
             for i in range(self.S):
-                cost += ca.mtimes([(X_scenario[i][t, :] - next_states[i, :]), self.Q, (X_scenario[i][t, :] - next_states[i, :]).T])
+                cost += ca.mtimes([(X_scenario[i][t, :] ), self.Q, (X_scenario[i][t, :]).T])
     
             cost += ca.mtimes([U[t, :].T, self.R, U[t, :]])
     

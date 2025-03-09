@@ -57,7 +57,7 @@ class BNN(PyroModule):
     def store_posterior_samples(self, samples):
         """ Store posterior samples after MCMC training. """
         self.posterior_samples = samples
-    def train(self, x_train, y_train, num_samples=50, warmup_steps=50, save_path=None):
+    def train(self, x_train, y_train, num_samples=200, warmup_steps=200, save_path=None):
         """
         Train the BNN using MCMC and store posterior samples.
 
@@ -82,21 +82,31 @@ class BNN(PyroModule):
         if save_path:
             torch.save(self.posterior_samples, save_path)
             print(f"Posterior samples saved to {save_path}")
-    def learn_dynamics(self, dynamical_system, num_initial_conditions=10, T=5.0, num_samples=50, save_path=None):
+    def learn_dynamics(self, dynamical_system, num_initial_conditions=100, T=5.0, num_samples=200, 
+                   state_bounds=None, control_bounds=None, save_path=None):
         """
         Train the BNN using synthetic data from a given system.
-
+    
         Args:
             dynamical_system (object): System instance to generate data.
             num_initial_conditions (int): Number of initial conditions.
             T (float): Simulation time.
             num_samples (int): Number of posterior samples.
+            state_bounds (tuple of np.ndarray, optional): (state_min, state_max), specifying lower 
+                and upper bounds for **each state variable**.
+            control_bounds (tuple of np.ndarray, optional): (control_min, control_max), specifying lower 
+                and upper bounds for **each control variable**.
             save_path (str, optional): Path to save posterior samples.
         """
         print("Generating training data...")
         
         # Generate synthetic dataset using the provided system
-        current_state, next_state, controls = dynamical_system.generate_dataset(num_initial_conditions, T)
+        current_state, next_state, controls = dynamical_system.generate_dataset(
+        num_initial_conditions=num_initial_conditions, 
+        T=T, 
+        state_bounds=state_bounds, 
+        control_bounds=control_bounds
+        )
 
         # Flatten the inputs: current_state and controls into a single input vector
         inputs = np.hstack([current_state, controls])  # Shape: (N, state_dim + control_dim)

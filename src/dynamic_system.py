@@ -88,7 +88,7 @@ class DynamicSystem:
     
 
     def generate_dataset(self, num_initial_conditions=10, T=5.0, add_noise=False, noise_std=0.01,
-                     state_bounds=(-1, 1), control_bounds=(-1, 1)):
+                     state_bounds=None, control_bounds=None):
         """
         Generate a dataset for learning system dynamics.
 
@@ -105,6 +105,15 @@ class DynamicSystem:
         """
         num_steps = int(T / self.dt)
         dataset_size = num_initial_conditions * num_steps
+        
+        # Set default bounds if not provided
+        if state_bounds is None:
+            state_bounds = (-50 * np.ones(self.n), 50 * np.ones(self.n))
+        if control_bounds is None:
+            control_bounds = (-50 * np.ones(self.m), 50 * np.ones(self.m))
+    
+        state_min, state_max = state_bounds
+        control_min, control_max = control_bounds
     
         # Preallocate input-output arrays using self.n and self.m
         current_state = np.zeros((dataset_size, self.n))  # x
@@ -114,13 +123,13 @@ class DynamicSystem:
         idx = 0
         for _ in range(num_initial_conditions):
             # Sample a random initial state
-            initial_state = np.random.uniform(state_bounds[0], state_bounds[1], size=self.n)
+            initial_state = np.random.uniform(low=state_min, high=state_max, size=self.n)
             self.state = initial_state  
-    
+            
             # Define a random control law for the simulation
             def random_control_law(state, t):
-                return np.random.uniform(control_bounds[0], control_bounds[1], size=self.m)  # Random control input
-    
+                return np.random.uniform(low=control_min, high=control_max, size=self.m) # Random control input
+            
             # Simulate the system with the control law
             states, applied_controls = self.simulate(control_law=random_control_law, T=T, add_noise=add_noise, 
                                    noise_std=noise_std)

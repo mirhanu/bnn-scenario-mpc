@@ -69,7 +69,7 @@ class CartPole(DynamicSystem):
             add_noise (bool): Whether to add noise.
             noise_std (float): Standard deviation of noise.
         """
-        states, _ = self.simulate(control_law, T=T, add_noise=add_noise, noise_std=noise_std)  # Now returns both states and controls
+        states, controls = self.simulate(control_law, T=T, add_noise=add_noise, noise_std=noise_std)  # Now returns both states and controls
         fig, ax = plt.subplots()
         ax.set_xlim(-5, 5)
         ax.set_ylim(-3, 3)
@@ -109,3 +109,4 @@ class CartPole(DynamicSystem):
             fig, update, frames=len(states), interval=self.dt * self.MS_PER_SEC, repeat=False
         )    
         plt.show()
+        return states, controls
