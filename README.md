@@ -9,17 +9,25 @@ As an example, the **CartPole** system is used. However, you can apply this appr
 ---
 
 
+---
+
 ## 📂 Project Structure
 ```
 /bnn-scenario-mpc
-│── Bnn.py               # Bnn class for learning system dynamics
-│── ScenarioMPC.py       # Scenario MPC implementation
-│── DynamicSystem.py     # Dynamic system base class 
-│── CartPole.py          # Cart Pole dynamics class 
-│── train_bnn.py         # Script for training the BNN
-│── run_mpc.py           # Script for running MPC using trained BNN
-│── requirements.txt     # Dependencies
+│── /src                 # Source code
+│   │── __init__.py      # Package initialization
+│   │── bnn.py           # BNN class for learning system dynamics
+│   │── scenario_mpc.py  # Scenario MPC implementation
+│   │── dynamic_system.py # Base class for dynamic systems
+│   │── cartpole.py      # CartPole dynamics class
+│── /scripts             # Scripts for running experiments
+│   │── train_bnn.py     # Script to train the BNN
+│   │── run_mpc.py       # Script to run MPC using the trained BNN
+│── /models              # Saved models & results
+│   │── posterior_samples.pth  # Saved BNN posterior samples
+│── LICENSE              # MIT License
 │── README.md            # Project documentation
+│── requirements.txt     # Dependencies
 ```
 
 ---
@@ -27,13 +35,13 @@ As an example, the **CartPole** system is used. However, you can apply this appr
 ## 📖 Usage
 ### **1️⃣ Train the BNN on a dynamic system**
 ```sh
-python train_bnn.py
+python scripts/train_bnn.py
 ```
 🔹 This will generate training data, run MCMC, and save posterior samples.
 
 ### **2️⃣ Run Scenario MPC using the trained BNN**
 ```sh
-python run_mpc.py
+python scripts/run_mpc.py
 ```
 🔹 Simulates the **CartPole** system using **Scenario MPC**, where the BNN's posterior samples are used as the dynamics.
 

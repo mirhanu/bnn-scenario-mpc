@@ -6,8 +6,8 @@ Created on Sat Mar  8 14:02:04 2025
 """
 
 import torch
-from bnn import BNN
-from CartPole import CartPole
+from src.bnn import BNN
+from src.cartpole import CartPole
 
 
 def main():
@@ -22,15 +22,15 @@ def main():
     dt = 0.05
     
     # File to save posterior samples
-    posterior_file = "posterior_samples.pth"
+    posterior_file = "models/posterior_samples.pth"
     
     # Initialize the CartPole system and BNN
     system = CartPole(dt=dt)
-    bnnModel = BNN(in_dim=system.n + system.m, out_dim=system.n)
+    bnn_model = BNN(in_dim=system.n + system.m, out_dim=system.n)
     
     # Train BNN using synthetic CartPole data
     print("Training BNN on CartPole dynamics...")
-    bnnModel.learn_dynamics(dynamical_system=system, num_samples=num_samples, save_path=posterior_file)
+    bnn_model.learn_dynamics(dynamical_system=system, num_samples=num_samples, save_path=posterior_file)
     
     print(f"Training complete. Posterior samples saved to {posterior_file}")
 

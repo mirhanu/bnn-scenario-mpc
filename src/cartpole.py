@@ -9,7 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from functools import partial
-from DynamicSystem import *
+from src.dynamic_system import *
 
 # CartPole class as a subclass of DynamicSystem
 class CartPole(DynamicSystem):
@@ -45,7 +45,7 @@ class CartPole(DynamicSystem):
         self.g = self.G
     
     def dynamics(self, state, u):
-        """Implement the CartPole specific dynamics."""
+        """Implement the CartPole specific continuous dynamics."""
         x, x_dot, theta, theta_dot = state
         u = u[0]  # Extract scalar control from array of size m=1
         

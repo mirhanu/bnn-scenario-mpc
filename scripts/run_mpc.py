@@ -6,9 +6,9 @@ Created on Sat Mar  8 14:02:15 2025
 """
 
 import numpy as np
-from bnn import BNN
-from ScenarioMPC import ScenarioMPC
-from CartPole import CartPole
+from src.bnn import BNN
+from src.scenario_mpc import ScenarioMPC
+from src.cartpole import CartPole
 
 def main(train_bnn=False):
     """
@@ -24,18 +24,18 @@ def main(train_bnn=False):
     dt=0.05
     
     #File to save and load posteriors
-    posterior_file="posterior_samples.pth"
+    posterior_file="models/posterior_samples.pth"
     
     # Initialize the CartPole system and BNN
     system = CartPole(dt=dt)
-    bnnModel = BNN(in_dim=system.n + system.m, out_dim=system.n)
+    bnn_model = BNN(in_dim=system.n + system.m, out_dim=system.n)
     
     # Train BNN if required
     if train_bnn:
-        bnnModel.learn_dynamics(dynamical_system=system, num_samples=num_samples, save_path=posterior_file)
+        bnn_model.learn_dynamics(dynamical_system=system, num_samples=num_samples, save_path=posterior_file)
 
     # Load MCMC posterior samples
-    bnnModel.load_posterior_samples(posterior_file)
+    bnn_model.load_posterior_samples(posterior_file)
 
     # Create MPC instance
     mpc = ScenarioMPC(N=10, n=system.n, m=system.m, S=num_samples, 
@@ -45,7 +45,7 @@ def main(train_bnn=False):
 
     # Run animation with MPC control rule
     print("Running MPC animation...")
-    system.animate(T=0.1, control_law=lambda state, t: mpc.solve(state,bnnModel.forward_casadi), add_noise=True)
+    system.animate(T=0.1, control_law=lambda state, t: mpc.solve(state,bnn_model.forward_casadi), add_noise=True)
 
 if __name__ == "__main__":
     main(train_bnn=False)  # Change to True to retrain BNN

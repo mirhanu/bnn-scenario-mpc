@@ -12,7 +12,7 @@ import pyro.distributions as dist
 from pyro.nn import PyroModule, PyroSample
 import torch.nn as nn
 from pyro.infer import MCMC, NUTS, Predictive
-from CartPole import DynamicSystem, CartPole 
+from src.cartpole import CartPole 
 import numpy as np
 import casadi as ca
 
